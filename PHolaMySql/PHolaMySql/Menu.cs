@@ -10,16 +10,18 @@ namespace PHolaMySql
 			int opcion, id;
 			string nuevo;
 
-			Console.WriteLine ("Seleccione un opción:");
-			Console.WriteLine ("_____________________");
-			Console.WriteLine ("0.Salir");
-			Console.WriteLine ("1.Nuevo");
-			Console.WriteLine ("2.Modifificar");
-			Console.WriteLine ("3.Eliminar");
-			Console.WriteLine ("4.Ver");
+			do {
 
-			opcion=int.Parse(Console.ReadLine());
+				Console.WriteLine ("Seleccione un opción:");
+				Console.WriteLine ("_____________________");
+				Console.WriteLine ("0.Salir");
+				Console.WriteLine ("1.Nuevo");
+				Console.WriteLine ("2.Modifificar");
+				Console.WriteLine ("3.Eliminar");
+				Console.WriteLine ("4.Ver");
 
+				opcion = int.Parse (Console.ReadLine ());
+			} while(opcion!=0);
 
 			switch(opcion) {
 				case 0:
