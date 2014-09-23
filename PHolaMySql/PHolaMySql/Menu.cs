@@ -14,7 +14,7 @@ namespace PHolaMySql
 			Console.WriteLine ("3.Eliminar");
 			Console.WriteLine ("4.Ver");
 
-			int opcion=Console.ReadLine();
+			//int opcion=Console.ReadLine();
 
 			switch(opcion) {
 				case 0:
