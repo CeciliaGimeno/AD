@@ -12,7 +12,6 @@ namespace PHolaMySql
 				"Data Source=localhost;Database=dbprueba;User ID=root;Password=sistemas");
 			//abrir la conexión
 			mySqlConnection.Open ();
-			Console.WriteLine ("Hello World!");
 			/*//Para insertar en la bbdd
 			 MySqlCommand mySqlCommand = mySqlConnection.CreateCommand ();
 			mySqlCommand.CommandText=
@@ -50,7 +49,7 @@ namespace PHolaMySql
 
 			//cerramos la conexión
 			mySqlConnection.Close ();
-
+			new Menu();
 		}
 	}
 }
