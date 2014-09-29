@@ -8,19 +8,25 @@ public partial class MainWindow: Gtk.Window
 	private MySqlConnection mySqlConnection;
 	private MySqlCommand mySqlCommand;
 
+		
+
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
 		Build ();
+		mySqlConnection = new MySqlConnection (
+			"Data Source=localhost;" +
+			"Database=dbprueba;" +
+			"User ID=root;" +
+			"Password=sistemas");
+		mySqlConnection.Open ();
+
 		//Añadir columnas tv.AppendColumn ("Demo", new CellRendererText (), "text", 0);
 		treeView.AppendColumn ("Id", new CellRendererText (),"text",0 );
 		treeView.AppendColumn ("Nombre", new CellRendererText (),"text",1 );
-
-		listStore = new ListStore (typeof(string), typeof(string));
+		listStore = new ListStore (typeof(ulong), typeof(string));
 		treeView.Model= listStore; //en java seria treeView.setModel(listStrore)
 		LeerDatos ();
-
-
-
+		string texto = "la";
 	}
 
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
@@ -31,47 +37,39 @@ public partial class MainWindow: Gtk.Window
 	}
 	protected void OnAddActionActivated (object sender, EventArgs e)
 	{
-		MySqlCommand mySqlCommand = mySqlConnection.CreateCommand ();
-		mySqlCommand.CommandText= string.Format("Insert into categoria(nombre) values ('{0}')", DateTime.Now);
-		//Si el dato lo introduce el usuario puede dar problemas de seguridad.
+		mySqlCommand = mySqlConnection.CreateCommand ();
+		//mySqlCommand.CommandText = string.Format("Insert into categoria(nombre) values ('{0}')", DateTime.Now);
+		string insertSql = "Insert into categoria(nombre) values ('{0}')";
+		insertSql = string.Format (insertSql, DateTime.Now);
+		mySqlCommand.CommandText = insertSql;
 
-		//para ejecutar comandos sencillos como insert, nos devuelve un entero, que son las filas afectadas.
 		mySqlCommand.ExecuteNonQuery();
-		listStore.Clear ();
 		LeerDatos ();
-
-
 	}
 
 	protected void OnRefreshActionActivated (object sender, EventArgs e)
 	{
-		listStore.Clear ();
+		//listStore.Clear ();
 		LeerDatos ();
 	}
 	protected void LeerDatos()
 	{
 		listStore.Clear ();
-		mySqlConnection = new MySqlConnection (
-			"Data Source=localhost;" +
-			"Database=dbprueba;" +
-			"User ID=root;" +
-			"Password=sistemas");
-		//abrir la conexión
-			mySqlConnection.Open ();
+
 
 		mySqlCommand = mySqlConnection.CreateCommand ();
 		mySqlCommand.CommandText = "select * from categoria";
 		MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader ();
 		while (mySqlDataReader.Read()) {
-			//lo guarda en un object para evitar castings
-			object id= mySqlDataReader ["id"].ToString();
+			//object id= mySqlDataReader ["id"].ToString();
+			object id= mySqlDataReader ["id"];
+			//Console.WriteLine ("id.GetType()={0}", id.GetType ());//Ver de que tipo es un object
 			object nombre= mySqlDataReader ["nombre"];
 			listStore.AppendValues (id, nombre);
-			//Console.WriteLine ("id={0} Nombre={1}", id, nombre);
 		}
 		mySqlDataReader.Close ();
+	}
+	private void fillListStore(){
 
 	}
-
-
 }

@@ -5,10 +5,12 @@ public partial class MainWindow
 	private global::Gtk.UIManager UIManager;
 	private global::Gtk.Action addAction;
 	private global::Gtk.Action refreshAction;
+	private global::Gtk.Action Action;
 	private global::Gtk.VBox vbox1;
 	private global::Gtk.Toolbar toolbar1;
 	private global::Gtk.ScrolledWindow GtkScrolledWindow;
 	private global::Gtk.TreeView treeView;
+	private global::Gtk.Entry entry;
 
 	protected virtual void Build ()
 	{
@@ -20,6 +22,8 @@ public partial class MainWindow
 		w1.Add (this.addAction, null);
 		this.refreshAction = new global::Gtk.Action ("refreshAction", null, null, "gtk-refresh");
 		w1.Add (this.refreshAction, null);
+		this.Action = new global::Gtk.Action ("Action", null, null, null);
+		w1.Add (this.Action, null);
 		this.UIManager.InsertActionGroup (w1, 0);
 		this.AddAccelGroup (this.UIManager.AccelGroup);
 		this.Name = "MainWindow";
@@ -51,6 +55,17 @@ public partial class MainWindow
 		this.vbox1.Add (this.GtkScrolledWindow);
 		global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.GtkScrolledWindow]));
 		w4.Position = 1;
+		// Container child vbox1.Gtk.Box+BoxChild
+		this.entry = new global::Gtk.Entry ();
+		this.entry.CanFocus = true;
+		this.entry.Name = "entry";
+		this.entry.IsEditable = true;
+		this.entry.InvisibleChar = '•';
+		this.vbox1.Add (this.entry);
+		global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.entry]));
+		w5.Position = 2;
+		w5.Expand = false;
+		w5.Fill = false;
 		this.Add (this.vbox1);
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();
