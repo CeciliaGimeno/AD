@@ -16,9 +16,7 @@ public partial class MainWindow: Gtk.Window
 		treeView.AppendColumn ("Nombre", new CellRendererText (),"text",1 );
 
 		listStore = new ListStore (typeof(string), typeof(string));
-
 		treeView.Model= listStore; //en java seria treeView.setModel(listStrore)
-
 		LeerDatos ();
 
 
