@@ -2,6 +2,8 @@ using System;
 using Gtk;
 using MySql.Data.MySqlClient;
 
+using PCategoria;
+
 public partial class MainWindow: Gtk.Window
 {
 	private ListStore listStore;
@@ -14,6 +16,7 @@ public partial class MainWindow: Gtk.Window
 		Build ();
 
 		deleteAction.Sensitive =false;
+		editAction.Sensitive = false;
 
 		mySqlConnection = new MySqlConnection (
 			"Data Source=localhost;" +
@@ -30,14 +33,14 @@ public partial class MainWindow: Gtk.Window
 		LeerDatos ();
 
 		//solo se ejecutará cuando ocurra este método.
-		treeView.Selection.Changed += selectionChanged;
-
-
+		treeView.Selection.Changed += selectionChanged;//+= delegate() seria otra forma de escribir lo mismo
 	}
 
 	private void selectionChanged(object sender, EventArgs e){
 		Console.WriteLine("selectionChanged");
-		deleteAction.Sensitive = treeView.Selection.CountSelectedRows () > 0;
+		bool hasSelected= treeView.Selection.CountSelectedRows () > 0;
+		deleteAction.Sensitive = hasSelected;
+		editAction.Sensitive = hasSelected;
 	}
 
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
@@ -110,6 +113,9 @@ public partial class MainWindow: Gtk.Window
 		mySqlCommand.ExecuteNonQuery();
 	}
 
-
+	protected void OnEditActionActivated (object sender, EventArgs e)
+	{
+		CategoriaView categoriaView = new CategoriaView(5);
+	}
 
 }
