@@ -6,13 +6,15 @@ public partial class MainWindow: Gtk.Window
 {
 	private ListStore listStore;
 	private MySqlConnection mySqlConnection;
-	private MySqlCommand mySqlCommand;
-
+	private MySqlCommand mySqlCommand; 
 		
 
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
 		Build ();
+
+		deleteAction.Sensitive =false;
+
 		mySqlConnection = new MySqlConnection (
 			"Data Source=localhost;" +
 			"Database=dbprueba;" +
@@ -26,7 +28,16 @@ public partial class MainWindow: Gtk.Window
 		listStore = new ListStore (typeof(ulong), typeof(string));
 		treeView.Model= listStore; //en java seria treeView.setModel(listStrore)
 		LeerDatos ();
-		string texto = "la";
+
+		//solo se ejecutará cuando ocurra este método.
+		treeView.Selection.Changed += selectionChanged;
+
+
+	}
+
+	private void selectionChanged(object sender, EventArgs e){
+		Console.WriteLine("selectionChanged");
+		deleteAction.Sensitive = treeView.Selection.CountSelectedRows () > 0;
 	}
 
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
@@ -35,6 +46,7 @@ public partial class MainWindow: Gtk.Window
 		Application.Quit ();
 		a.RetVal = true;
 	}
+
 	protected void OnAddActionActivated (object sender, EventArgs e)
 	{
 		mySqlCommand = mySqlConnection.CreateCommand ();
@@ -49,14 +61,13 @@ public partial class MainWindow: Gtk.Window
 
 	protected void OnRefreshActionActivated (object sender, EventArgs e)
 	{
-		//listStore.Clear ();
+		listStore.Clear ();
 		LeerDatos ();
 	}
+
 	protected void LeerDatos()
 	{
 		listStore.Clear ();
-
-
 		mySqlCommand = mySqlConnection.CreateCommand ();
 		mySqlCommand.CommandText = "select * from categoria";
 		MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader ();
@@ -69,7 +80,36 @@ public partial class MainWindow: Gtk.Window
 		}
 		mySqlDataReader.Close ();
 	}
-	private void fillListStore(){
+	
 
+	protected void OnDeleteActionActivated (object sender, EventArgs e)
+	{
+		//confirmar la eliminación con una ventana
+		MessageDialog messageDialog = new MessageDialog (
+			this,
+			DialogFlags.Modal,
+			MessageType.Question,
+			ButtonsType.YesNo,
+			"¿Quieres eliminar el registro?"
+			);
+		messageDialog.Title = Title;
+		ResponseType response= (ResponseType)messageDialog.Run();
+		messageDialog.Destroy();
+
+		if (response != ResponseType.Yes)
+			return;
+
+		TreeIter treeIter;
+		treeView.Selection.GetSelected (out treeIter);//out para devolver un valor
+
+		object id = listStore.GetValue (treeIter, 0);
+		string deleteSql = string.Format ("delete from categoria where id={0}", id);
+
+		mySqlCommand = mySqlConnection.CreateCommand ();
+		mySqlCommand.CommandText =  deleteSql;
+		mySqlCommand.ExecuteNonQuery();
 	}
+
+
+
 }
