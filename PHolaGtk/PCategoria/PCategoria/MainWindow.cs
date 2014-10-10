@@ -18,12 +18,7 @@ public partial class MainWindow: Gtk.Window
 		deleteAction.Sensitive =false;
 		editAction.Sensitive = false;
 
-		mySqlConnection = new MySqlConnection (
-			"Data Source=localhost;" +
-			"Database=dbprueba;" +
-			"User ID=root;" +
-			"Password=sistemas");
-		mySqlConnection.Open ();
+		mySqlConnection = App.Instance.MySqlConnection;//parecido a una variable global
 
 		//Añadir columnas tv.AppendColumn ("Demo", new CellRendererText (), "text", 0);
 		treeView.AppendColumn ("Id", new CellRendererText (),"text",0 );
@@ -115,7 +110,12 @@ public partial class MainWindow: Gtk.Window
 
 	protected void OnEditActionActivated (object sender, EventArgs e)
 	{
-		CategoriaView categoriaView = new CategoriaView(5);
+		TreeIter treeIter;
+		treeView.Selection.GetSelected (out treeIter);//out para devolver un valor
+
+		object id = listStore.GetValue (treeIter, 0);
+
+		CategoriaView categoriaView = new CategoriaView(id);
 	}
 
 }

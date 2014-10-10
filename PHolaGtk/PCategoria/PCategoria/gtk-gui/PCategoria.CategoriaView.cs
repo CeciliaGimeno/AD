@@ -73,6 +73,7 @@ namespace PCategoria
 			this.DefaultWidth = 400;
 			this.DefaultHeight = 300;
 			this.Show ();
+			this.saveAction.Activated += new global::System.EventHandler (this.OnSaveActionActivated);
 		}
 	}
 }
