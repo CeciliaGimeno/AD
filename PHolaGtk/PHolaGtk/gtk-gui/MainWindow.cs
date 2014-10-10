@@ -3,8 +3,6 @@
 public partial class MainWindow
 {
 	private global::Gtk.UIManager UIManager;
-	private global::Gtk.Action newAction;
-	private global::Gtk.Action newAction1;
 	private global::Gtk.VBox vbox1;
 	private global::Gtk.Toolbar toolbar2;
 	private global::Gtk.HBox hbox1;
@@ -19,11 +17,6 @@ public partial class MainWindow
 		// Widget MainWindow
 		this.UIManager = new global::Gtk.UIManager ();
 		global::Gtk.ActionGroup w1 = new global::Gtk.ActionGroup ("Default");
-		this.newAction = new global::Gtk.Action ("newAction", global::Mono.Unix.Catalog.GetString ("_Nuevo"), null, "gtk-new");
-		this.newAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("_Nuevo");
-		w1.Add (this.newAction, null);
-		this.newAction1 = new global::Gtk.Action ("newAction1", null, null, "gtk-new");
-		w1.Add (this.newAction1, null);
 		this.UIManager.InsertActionGroup (w1, 0);
 		this.AddAccelGroup (this.UIManager.AccelGroup);
 		this.Name = "MainWindow";
@@ -34,7 +27,7 @@ public partial class MainWindow
 		this.vbox1.Name = "vbox1";
 		this.vbox1.Spacing = 6;
 		// Container child vbox1.Gtk.Box+BoxChild
-		this.UIManager.AddUiFromString ("<ui><toolbar name='toolbar2'><toolitem name='newAction1' action='newAction1'/></toolbar></ui>");
+		this.UIManager.AddUiFromString ("<ui><toolbar name='toolbar2'><toolitem/></toolbar></ui>");
 		this.toolbar2 = ((global::Gtk.Toolbar)(this.UIManager.GetWidget ("/toolbar2")));
 		this.toolbar2.Name = "toolbar2";
 		this.toolbar2.ShowArrow = false;
@@ -100,8 +93,6 @@ public partial class MainWindow
 		this.DefaultHeight = 300;
 		this.Show ();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
-		this.newAction.Activated += new global::System.EventHandler (this.OnNewActionActivated);
-		this.newAction1.Activated += new global::System.EventHandler (this.OnNewAction1Activated);
 		this.button.Clicked += new global::System.EventHandler (this.OnButtonClicked);
 	}
 }
